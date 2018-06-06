@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+
+<html ng-app='hackathonAdminInterface'>
+
+	<head>
+		<meta charset='UTF-8'/>
+		<title>AngularTest</title>
+		<link href='Libraries/bootstrap.css' rel='stylesheet'/>
+		<link href='Libraries/bootstrap-theme.css' rel='stylesheet'/>
+		<link href='DexStyles.css' rel='stylesheet'/>
+		<script src='Libraries/angular.min.js'></script>
+		<script>
+			function S4() {
+				return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+			}
+			function guid() {
+				return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+			}
+		</script>
+		<script>
+			function advertFormPop(){
+				document.getElementById('advertForm').style.display="block";
+			}
+			
+			function cancelAdvert(){
+				document.getElementById('advertForm').style.display="none";
+			}
+					
+		</script>
+		<script>
+		
+			var model = {
+			showedRows: '10',
+			users: [{name:'Тестовый.А'}],
+			adverts: [{num:'1',date:'01.01.2015',ad:'Сегодня состоится хакатон 2',rating:'1',
+			user:'Тестовый.А',id:'1',index:'0'}],
+			advertsSpare:[]
+			}
+		
+			var hackathonAdminInterface = angular.module('hackathonAdminInterface',[]); 
+			hackathonAdminInterface.controller('hackAdminCtrl', function($scope){
+			$scope.data = model;
+			 
+			var advertChanging;
+			
+			$scope.deleteAdvert = function(){
+					model.adverts.splice(advertChanging.index, 1);
+			}
+			
+			$scope.addNewAdvert = function(){
+					
+				$scope.data.adverts.push({
+					num: $scope.num, 
+					date: $scope.date, 
+					ad: $scope.ad, 
+					rating:$scope.rate,
+					user: $scope.user,
+					id: guid(),
+					index: model.adverts.length
+				});
+				
+				if($scope.data.users.indexOf($scope.user)==-1){
+					$scope.data.users.push({
+						name:$scope.user
+					});
+				}
+			}
+			
+			$scope.changeAdvert = function(advert){
+				$scope.num = advert.num;
+				$scope.date = advert.date;
+				$scope.ad = advert.ad;
+				$scope.rate = advert.rating;
+				$scope.user = advert.user;
+				advertChanging = advert;
+			}
+			
+			$scope.search = function(){
+				model.advertsSpare = model.adverts.slice(0);
+				var searchUser = $scope.searchUser;
+				var searchGlobal = $scope.searchGlobal;
+				var searchDateMin = $scope.searchDateMin;
+				var searchDateMin = $scope.searchDateMax;
+				
+				if((searchUser!='Все')&&(searchUser!='undefined')){
+					model.adverts = model.adverts.filter(advert => (advert.user.includes(searchUser)));
+				}
+				//if((searchGlobal!='')&&(searchGlobal!='undefined')){
+				//	model.adverts = model.adverts.filter(advert => ((advert.ad.includes(searchGlobal))||(advert.id.includes(searchGlobal))||(advert.rating.includes(searchGlobal))||(advert.num.includes(searchGlobal))));
+				//}
+			}
+				
+			});
+		</script>
+	</head>
+	
+	<body ng-controller='hackAdminCtrl'>
+		<div class='container'>
+			<div class='panel'>
+				<div class='linegroup page-header'>	
+					<div class='box'>
+						<div class='addButton'><button class='btn btn-default' onclick='advertFormPop()'>Добавить</button></div>
+						<div><p class ='userPar'>Пользователь</p></div>
+						<div><select class='usernameSel' class='usernameSel' ng-model='searchUser' ng-change='search()'>
+								<option>Все</option>
+								<option ng-repeat='advert in data.adverts'>{{advert.user}}</option>
+							</select>
+						<div><p>от</p></div>
+						<div><input class='dateInp' type='date' ng-model='searchDateMin' ng-change='search()'/></div>
+						<div><p>до</p></div>
+						<div><input class='dateInp' type='date' ng-model='searchDateMax' ng-change='search()'/></div>
+						<div><input class='globalSearch' id='globalSearch' placeholder='Общий поиск' ng-model='searchGlobal' ng-blur='search()' tabindex='1'/></div>
+						<div><select ng-model='showedRows' class='showedRows' value='{{showedRows}}' tabindex='2'>
+								<option>10</option>
+								<option>25</option>
+								<option>50</option>
+								<option>100</option>
+							</select>
+						</div>
+					</div>
+				</div>	
+			
+				<table border='3px' rules='groups' class='table table-hover'>
+						<thead class='theadMaintable'>
+							<tr>
+								<th>Номер</th>
+								<th>Создано</th>
+								<th>Объявление</th>
+								<th>Рейтинг</th>
+								<th>Пользователь</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr id='advertsTable' ng-click ='changeAdvert(advert)' ng-repeat='advert in data.adverts'>
+								<td>{{advert.num}}</td>
+								<td>{{advert.date}}</td>
+								<td>{{advert.ad}}</td>
+								<td>{{advert.rating}}</td>
+								<td>{{advert.user}}</td>
+							</tr>
+							
+						</tbody>
+				</table>
+				
+				<table class='leafTable'>
+					<tr>
+						<td class ='leafTableItem' ng-model='currentPage'><button>1</button></td>
+						<td class ='leafTableItem' ng-model='nextPage'><button>2</button></td>
+						<td class ='leafTableItem'>...</td>
+						<td class ='leafTableItem' ng-model='lastPage'><button>100</button></td>
+					</tr>
+				</table>
+				
+			</div>
+			
+			<div class='advertForm panel' id='advertForm'>
+				<h4>Объявление</h4>
+				<div class='linegroupBox'>
+					<div class='linegroup'>
+						<div class='box'>
+							<div class='param'><p style='font-weight:bold'>Номер</p></div>
+							<div><input id='number1' type='number' ng-model='num' value='{{num}}'/></div>
+						</div>
+					</div>
+					<div class='linegroup'>
+						<div class='box'>
+							<div class='param'><p style='font-weight:bold'>Создано</p></div>
+							<div><input id='date1' type='text' ng-model='date' value='{{date}}'/></div>
+						</div>
+					</div>
+					<div class='linegroup'>
+						<div class='box'>
+							<div class='param'><p style='font-weight:bold'>Пользователь</p></div>
+							<div><input id='user1' type='txt' list='names' ng-model='user' value='{{user}}'/>
+								<datalist id='names'>
+									<option ng-repeat='advert in data.adverts'>{{advert.user}}</option>
+								</datalist>
+							</div>
+						</div>
+					</div>
+					<div class='linegroup'>
+						<div class='box'>
+							<div class='param' align='top'><p style='font-weight:bold'>Текст</p></div>
+							<div><textarea id='text1' rows="6" cols="45" name="text" ng-model='ad' value='{{ad}}'></textarea></div>
+						</div>
+					</div>
+					<div class='linegroup'>
+						<div class='box'>
+							<div class='param'><p style='font-weight:bold'>Рейтинг</p></div>
+							<div><input id='rate1' type='number' min='1' max='10' ng-model='rate' value='{{rate}}'/></div>
+							<div class='hint'><p>от 1 до 10</p></div>
+						</div>
+					</div>
+					<div class='linegroup linegroup-lowest'>
+						<div class='box'>
+							<div class='form-btn-container'><button ng-click='deleteAdvert()' class='btn btn-delete'>Удалить</button></div>
+							<div ><button class='btn btn-default' ng-click='addNewAdvert()'>Добавить новую запись</button></div>
+							<div ><button class='btn btn-default' onclick='cancelAdvert()'>Отменить</button></div>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			
+		</div>
+	</body>
+	
+</html>

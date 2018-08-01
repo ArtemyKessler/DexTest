@@ -1,0 +1,60 @@
+.linegroup{
+	overflow:hidden;
+	margin-bottom:1%;
+}
+
+.linegroup-lowest{
+	margin-bottom:2%;
+}
+
+.box{
+	white-space:nowrap;
+}
+
+.box div{
+	display:inline-block;
+}
+
+.advertTable{
+	margin-top:15px;
+}
+
+.advertForm{
+	display:none;
+	border:4px solid black;
+}
+
+.linegroupBox{
+	margin-left:6%;
+	margin-top:1%;
+}
+
+.param{
+	width:10%;
+}
+
+.hint{
+	opacity:0.5;
+	margin-left:1%;
+}
+
+.pages{
+	margin-left:70%;
+	margin-top: 15px;
+}
+
+.form-btn-container{
+	width:20%;
+}
+
+.btn-delete{
+	background-color:red;
+	color:white;
+	box-shadow:3px 0px 5px black;
+}
+
+.sorter:hover{
+	color: blue; 
+}
+
+

@@ -1,0 +1,31 @@
+.linegroup{
+	overflow:hidden;
+	margin-bottom:1%;
+}
+
+.box{
+	white-space:nowrap;
+}
+
+.box div{
+	display:inline-block;
+}
+
+.param{
+	width:10%;
+}
+
+.hint{
+	opacity:0.5;
+	margin-left:1%;
+}
+
+.form-btn-container{
+	width:13.5%;
+}
+
+.btn-delete{
+	background-color:red;
+	color:white;
+	box-shadow:3px 0px 5px black;
+}

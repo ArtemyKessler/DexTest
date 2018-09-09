@@ -1,0 +1,105 @@
+<div class="formSearch">
+	<div class="form-inline">
+		<div>
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-8">
+					<a routerLink="/bulletin-change/0">
+						<button class="btn btn-default">
+							Добавить
+						</button>
+					</a>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-8">
+					<label class="col-md-8">Пользователь</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<input class="form-control" type='text' [(ngModel)]='userSearch' list='users' />
+				<datalist id='users'>
+					<option *ngFor='let user of users'>{{user.name}}</option>
+				</datalist>
+			</div>
+			<div class="form-group">
+				<label class="col-md-6">от</label>
+			</div>
+			<div class="form-group">
+				<input type="date" [(ngModel)]="startDate" />
+			</div>
+			<div class="form-group">
+				<label class="col-md-6">до</label>
+			</div>
+			<div class="form-group">
+				<input type="date" [(ngModel)]="endDate" />
+			</div>
+			<div class="form-group">
+				<div class="col-md-8">
+					<input class="form-control" [(ngModel)]="search" placeholder="Общий поиск" />
+				</div>
+			</div>
+			<div class="form-group">
+				<select class="form-control" [(ngModel)]="pageSize">
+					<option selected>10</option>
+					<option>25</option>
+					<option>50</option>
+					<option>100</option>
+				</select>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="bulletinsView">
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th **ngFor="let param of paramService.params" ((click)="addSortParam(param)" )>{{param.russianParamName}}</th>
+				<th>&nbsp;</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let bulletin of bulletins" class="bulletins">
+				<td>{{bulletin.num}}</td>
+				<td>{{DateFormat(bulletin.created)}}</td>
+				<td>{{bulletin.content}}</td>
+				<td>{{bulletin.rating}}</td>
+				<td>{{bulletin.userId}}</td>
+				<td>
+					<a routerLink="/bulletin-change/{{bulletin.id}}">
+						<button class="btn btn-default btn-change">
+							Редактировать
+						</button>
+					</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div class="form-inline pages">
+	<div class="form-group">
+		<div class="col-md-1">
+			<button class="btn btn-default" id="backButton" (click)="pageNumberDecr()" style="display:none">Назад</button>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-md-1">
+			<button class="btn btn-default">{{pageNumber}}</button>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-md-1">
+			<button class="btn btn-default" id="forthButton" (click)="pageNumberIncr()">Вперед</button>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-md-1">
+			<p>...</p>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-md-1">
+			<button class="btn btn-default" (click)="pageNumberMaxJmp()">100</button>
+		</div>
+	</div>
+</div>

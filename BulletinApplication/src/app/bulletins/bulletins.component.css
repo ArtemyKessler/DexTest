@@ -1,0 +1,19 @@
+.formSearch {
+  margin-bottom: 2em;
+}
+
+.bulletinsView {
+  border: solid grey 3px;
+}
+
+tbody {
+  border-bottom: solid black 1px;
+}
+
+.btn-change {
+  opacity: 0.1;
+}
+
+.bulletins button:hover {
+  opacity: 0.7;
+}

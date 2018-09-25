@@ -32,7 +32,7 @@ export class BulletinsComponent implements OnInit {
   endDate: Date;
   search: string;
   pageSize = 10;
-  pageNumber: number;
+  pageNumber = 1;
 
   constructor(
     private bulletinService: BulletinService,

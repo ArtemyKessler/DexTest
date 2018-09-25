@@ -54,7 +54,7 @@
 	<table class="table table-striped">
 		<thead>
 			<tr>
-				<th **ngFor="let param of paramService.params" ((click)="addSortParam(param)" )>{{param.russianParamName}}</th>
+				<th *ngFor="let param of paramService.params" (click)="addSortParam(param)">{{param.russianParamName}}</th>
 				<th>&nbsp;</th>
 			</tr>
 		</thead>
